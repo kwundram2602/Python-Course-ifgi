@@ -29,6 +29,17 @@ def verbing(s):
     # If the input is not of type string return a hint
     else:
         return "The input has to be a string."
+    
+def remove_adjacent(nums):
+    # Create a new list
+    ans = []
+    # Iterate through nums
+    for i in range(len(nums)):
+        # if the previous number is not the same then append the number to the result list
+        if nums[i] != nums[i-1] or i == 0:
+            ans.append(nums[i])
+    # Return the result list
+    return ans
 
 def main():
     print('donuts')
@@ -36,10 +47,17 @@ def main():
     print(donuts(9))
     print(donuts(10))
     print(donuts('twentyone'))
+
     print('verbing')
     print(verbing('hail'))
     print(verbing('swiming'))
     print(verbing('do'))
+
+    print('remove_adjacent')
+    print(remove_adjacent([1, 2, 2, 3]))
+    print(remove_adjacent([2, 2, 3, 3, 3]))
+    #print(remove_adjacent([]))
+
 
 # Standard boilerplate to call the main() function.
 if __name__ == '__main__':
