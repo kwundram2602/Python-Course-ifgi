@@ -33,13 +33,16 @@ def verbing(s):
 def remove_adjacent(nums):
     # Create a new list
     ans = []
-    # Iterate through nums
-    for i in range(len(nums)):
-        # if the previous number is not the same then append the number to the result list
-        if nums[i] != nums[i-1] or i == 0:
-            ans.append(nums[i])
-    # Return the result list
-    return ans
+    if nums != []:
+        # Iterate through nums
+        for i in range(len(nums)):
+            # if the previous number is not the same then append the number to the result list
+            if nums[i] != nums[i-1] or i == 0:
+                ans.append(nums[i])
+        # Return the result list
+        return ans
+    else:
+        return "The list is empty."
 
 def main():
     print('donuts')
@@ -56,7 +59,7 @@ def main():
     print('remove_adjacent')
     print(remove_adjacent([1, 2, 2, 3]))
     print(remove_adjacent([2, 2, 3, 3, 3]))
-    #print(remove_adjacent([]))
+    print(remove_adjacent([]))
 
 
 # Standard boilerplate to call the main() function.
