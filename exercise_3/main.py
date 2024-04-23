@@ -1,5 +1,6 @@
-from calculator import Calculator
-from shopping import Item, ShoppingCart
+from easy_shopping import calculator
+from easy_shopping import shopping
+
 
 # calculator = Calculator()
 # print(calculator.add(7,5))
