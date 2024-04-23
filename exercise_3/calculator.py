@@ -12,5 +12,5 @@ class Calculator:
         if number2 != 0:
             return number1/number2
         else:
-            raise Exception("You cannot devide by zero")
+            raise ZeroDivisionError("You cannot devide by zero")
     
