@@ -1,5 +1,5 @@
 class Item:
-    def __init__(self,preis,name):
+    def __init__(self,preis:int,name:str):
         if(preis<0):
             raise ValueError("preis can not be lower than 0")
         self.preis=preis
@@ -22,9 +22,10 @@ class ShoppingCart:
         self.items.append(item)
         
     # deletes item in cart with given index
-    def deleteItem(self,index):
+    def deleteItem(self,index:int):
         if(index in range(0,len(self.items)-1)):
             del self.items[index]
+            print(f"item with index {index} deleted")
         else:
             print("No item with given index")
             
@@ -39,4 +40,6 @@ class ShoppingCart:
             
     # returns number of items in cart
     def calculateQuantity(self):
-        return len(self.items)
+        quantity =len(self.items)
+        print(f"Cart contains {quantity} items")
+        return quantity
