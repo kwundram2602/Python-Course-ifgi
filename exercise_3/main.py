@@ -1,5 +1,6 @@
-from easy_shopping import calculator
-from easy_shopping import shopping
+from easy_shopping.calculator import Calculator
+from easy_shopping.shopping import Item, ShoppingCart
+
 
 
 # calculator = Calculator()

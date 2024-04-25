@@ -1,7 +1,7 @@
 class Calculator:
     def add(self, number1 : int, number2 : int):
         # return the added number
-        return number1 + number2
+       return number1 + number2
     
     def subtract(self, number1 : int, number2 : int):
         # return the subtracted number
@@ -17,4 +17,5 @@ class Calculator:
             return number1/number2
         else:
             raise ZeroDivisionError("You cannot devide by zero")
-    
+        
+ 
