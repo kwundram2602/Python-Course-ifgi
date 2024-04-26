@@ -16,6 +16,6 @@ class Calculator:
             # return the divided number if number2 isnt 0
             return number1/number2
         else:
-            raise ZeroDivisionError("You cannot devide by zero")
+            return "You can not divide by 0"
         
  
