@@ -1,9 +1,7 @@
-from easy_shopping import calculator
-from easy_shopping import shopping
+from easy_shopping import shopping as s
 
-
-# calculator = Calculator()
-# print(calculator.add(7,5))
+#calculator = calculator.Calculator()
+#print(calculator.add(7,5))
 # print(calculator.subtract(34,21))
 # print(calculator.multiply(54,2))
 # print(calculator.divide(144,2))
@@ -11,9 +9,10 @@ from easy_shopping import shopping
 
 
 # create 3 items
-item1=Item(20,"Tisch")
-item2=Item(5,"Ball")
-item3=Item(1000,"VR-Brille")
+
+item1= s.Item(20,"Tisch")
+item2=s.Item(5,"Ball")
+item3=s.Item(1000,"VR-Brille")
 
 # crate cart and add 3 items
 cart=ShoppingCart()

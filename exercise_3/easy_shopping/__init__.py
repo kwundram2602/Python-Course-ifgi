@@ -1,2 +1,2 @@
-import calculator
+import easy_shopping.calculator
 import shopping
