@@ -1,2 +1,0 @@
-import easy_shopping.calculator
-import shopping
