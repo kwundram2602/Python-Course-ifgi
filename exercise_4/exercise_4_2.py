@@ -5,8 +5,7 @@ path=QgsProject.instance().readPath("./")
 #print("PATH: ", path)
 schoolreport= open(path+'/SchoolReport.csv', 'w',newline='') 
 writer = csv.writer(schoolreport,delimiter=';')
-writer.writerows([['Name'],['X'],['Y']])
-
+writer.writerow(['Name','X','Y'])
 
 schools= mc.currentLayer()
 
@@ -20,6 +19,6 @@ for feature in selectedSchools:
     xcoord = pt.x()
     ycoord = pt.y()
     name = feature.attributes()
-    output = [[name[1]],[xcoord],[ycoord]]
-    print(output)
-    writer.writerows(output)
+    output = [name[1],xcoord,ycoord]
+    print(output[2])
+    writer.writerow(output)
