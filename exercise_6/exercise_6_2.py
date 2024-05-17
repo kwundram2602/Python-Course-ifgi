@@ -16,11 +16,10 @@ provider = layer.dataProvider()
 
 # Getting capabilities of layer
 capabilities = provider.capabilitiesString()
-print(capabilities)
 
 # Check if atrributes can be changed (had to check in german, if its not working change to english)
 if "Attributwerte ändern" in capabilities:
-    print("je")
+
     # Iterate through all features of layer
     for feature in layer.getFeatures():
         # Get id of current feature
@@ -40,7 +39,6 @@ else:
 # Add field_added variable
 field_added = False
 
-
 # Check if atrributes can be added (had to check in german, if its not working change to english)
 if "Attribute hinzufügen" in capabilities:
     
@@ -55,7 +53,6 @@ if "Attribute hinzufügen" in capabilities:
     
     # Set the field_added variable to true
     field_added = True
-    
     
 else: 
     print("Fields cannot be added to the layer")
