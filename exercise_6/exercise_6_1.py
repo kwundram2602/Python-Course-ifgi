@@ -49,7 +49,7 @@ fileEncoding = "UTF-8"
 driverName ="ESRI Shapefile"
 onlySelected = False
 
-# write layer from csv
+# write layer 
 QgsVectorFileWriter.writeAsVectorFormat(layer, path+"./final_standard_land_value_muenster.shp",
 fileEncoding,destCRS, driverName, onlySelected)
 # final layer path
