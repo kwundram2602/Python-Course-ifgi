@@ -12,6 +12,7 @@
 # install reportlab
 import pip
 pip.main(['install', 'reportlab'])
+from reportlab.pdfgen import canvas
 
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsProcessing,QgsProject,
@@ -27,6 +28,13 @@ from qgis.core import (QgsProcessing,QgsProject,
                        QgsProcessingParameterFeatureSink)
 from qgis import processing
 
+# create pdf function
+def createPDF(path,layername):
+    c = canvas.Canvas(path)
+    c.drawString(100,750,f"Statistics of {layername}")
+    c.save()
+    return 0  
+
 class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     """
     This processing script creates a PDF profile for a specific city district.
@@ -36,12 +44,10 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     # used when calling the algorithm from another algorithm, or when
     # calling from the QGIS console.
 
-    INPUT = 'INPUT'
     DISTRICTNAME = 'DISTRICTNAME'
     POINTINPUT = 'POINTINPUT'
-    OUTPUT = 'OUTPUT'
+    PDFOUTPUT = 'PDF_OUTPUT'
     
-
     def tr(self, string):
         """
         Returns a translatable string with the self.tr() function.
@@ -69,7 +75,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         Returns the name of the group this algorithm belongs to. This string
         should be localised.
         """
-        return self.tr('Layer tools')
+        return self.tr('Layer tools. ')
 
     def groupId(self):
         """
@@ -89,17 +95,13 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         """
         return self.tr("This processing script creates a PDF profile for a specific city district.")
 
-    
-      
-    def createPDF(self,parameters):
-        
-        return 0  
-    
     def initAlgorithm(self, config=None):
         """
         Here we define the inputs and output of the algorithm, along
         with some other properties.
         """
+        
+        
         # function definition to get alphabetical list
         def alphabeticalDistrictList():
         # district layer
@@ -116,22 +118,14 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
             for feature in districts.getFeatures(request):
                 name= feature['NAME']
                 district_names.append(name)
-            print(district_names)
+            
             return district_names
         
         
         # create list of district names. Use user defined function
         param_name_list= alphabeticalDistrictList()
         
-        # We add the input vector features source. It can have any kind of
-        # geometry.
-        self.addParameter(
-            QgsProcessingParameterFeatureSource(
-                self.INPUT,
-                self.tr('Input layer'),
-                [QgsProcessing.TypeVectorAnyGeometry]
-            )
-        )
+        # district name parameter
         self.addParameter(
             QgsProcessingParameterEnum(
                 self.DISTRICTNAME,
@@ -139,7 +133,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
                 param_name_list
             )
         )
-        
+        # point input paramter : pools or schools
         self.addParameter(
             QgsProcessingParameterFeatureSource(
                 self.POINTINPUT,
@@ -148,13 +142,12 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
             )
         )
 
-        # We add a feature sink in which to store our processed features (this
-        # usually takes the form of a newly created vector layer when the
-        # algorithm is run in QGIS).
+        # pdf output. user can set destination
         self.addParameter(
-            QgsProcessingParameterFeatureSink(
-                self.OUTPUT,
-                self.tr('Output layer')
+            QgsProcessingParameterFileDestination(
+                self.PDFOUTPUT,
+                self.tr('PDF Output '),
+                fileFilter='PDF files (*.pdf)'
             )
         )
 
@@ -163,7 +156,9 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         Here is where the processing itself takes place.
         """
         #pdf_output = self.parameterAsFileOutput(parameters,'PDF_OUTPUT',context)
-        #self.createPDF(pdf_output)
+        print(parameters)
+        createPDF(self.PDFOUTPUT,"testlayer")
+        
        
         
-        return {self.OUTPUT: "Template"}
+        return {self.PDFOUTPUT: "Template"}
