@@ -14,12 +14,16 @@ import pip
 pip.main(['install', 'reportlab'])
 
 from qgis.PyQt.QtCore import QCoreApplication
-from qgis.core import (QgsProcessing,
+from qgis.core import (QgsProcessing,QgsProject,
                        QgsProcessingParameterFileDestination,
                        QgsFeatureSink,
                        QgsProcessingException,
+                       QgsFeatureRequest,
                        QgsProcessingAlgorithm,
+                       QgsProcessingParameterString,
+                       QgsProcessingParameterEnum,
                        QgsProcessingParameterFeatureSource,
+                       
                        QgsProcessingParameterFeatureSink)
 from qgis import processing
 
@@ -33,7 +37,10 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     # calling from the QGIS console.
 
     INPUT = 'INPUT'
+    DISTRICTNAME = 'DISTRICTNAME'
+    POINTINPUT = 'POINTINPUT'
     OUTPUT = 'OUTPUT'
+    
 
     def tr(self, string):
         """
@@ -82,25 +89,9 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         """
         return self.tr("This processing script creates a PDF profile for a specific city district.")
 
-    def alphabeticalDistrictList(self):
-        # district layer
-        districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
-        # request order by nameclause
-        request = QgsFeatureRequest()
-        nameClause = QgsFeatureRequest.OrderByClause("Name",
-        ascending = True)
-        orderby = QgsFeatureRequest.OrderBy([nameClause])
-        request.setOrderBy(orderby)
-
-        # name list 
-        district_names =[]
-        for feature in districts.getFeatures(request):
-            name= feature['NAME']
-            district_names.append(name)
-        print(district_names)
-        return district_names
+    
       
-    def createPDF(self):
+    def createPDF(self,parameters):
         
         return 0  
     
@@ -109,9 +100,29 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         Here we define the inputs and output of the algorithm, along
         with some other properties.
         """
-        
-        
+        # function definition to get alphabetical list
+        def alphabeticalDistrictList():
+        # district layer
+            districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
+            # request order by nameclause
+            request = QgsFeatureRequest()
+            nameClause = QgsFeatureRequest.OrderByClause("Name",
+            ascending = True)
+            orderby = QgsFeatureRequest.OrderBy([nameClause])
+            request.setOrderBy(orderby)
 
+            # name list 
+            district_names =[]
+            for feature in districts.getFeatures(request):
+                name= feature['NAME']
+                district_names.append(name)
+            print(district_names)
+            return district_names
+        
+        
+        # create list of district names. Use user defined function
+        param_name_list= alphabeticalDistrictList()
+        
         # We add the input vector features source. It can have any kind of
         # geometry.
         self.addParameter(
@@ -119,6 +130,21 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
                 self.INPUT,
                 self.tr('Input layer'),
                 [QgsProcessing.TypeVectorAnyGeometry]
+            )
+        )
+        self.addParameter(
+            QgsProcessingParameterEnum(
+                self.DISTRICTNAME,
+                self.tr('District Name'),
+                param_name_list
+            )
+        )
+        
+        self.addParameter(
+            QgsProcessingParameterFeatureSource(
+                self.POINTINPUT,
+                self.tr('Input point layer'),
+                [QgsProcessing.TypeVectorPoint]
             )
         )
 
@@ -136,8 +162,8 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         """
         Here is where the processing itself takes place.
         """
-        pdf_output = self.parameterAsFileOutput(parameters,'PDF_OUTPUT',context)
-        self.createPDF(pdf_output)
+        #pdf_output = self.parameterAsFileOutput(parameters,'PDF_OUTPUT',context)
+        #self.createPDF(pdf_output)
        
         
-        return 0
+        return {self.OUTPUT: "Template"}
