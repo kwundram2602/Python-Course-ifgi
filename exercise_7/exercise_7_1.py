@@ -10,8 +10,8 @@
 """
 # imports
 # install reportlab
-import pip
-pip.main(['install', 'reportlab'])
+#import pip
+#pip.main(['install', 'reportlab'])
 from reportlab.pdfgen import canvas
 
 from qgis.PyQt.QtCore import QCoreApplication
