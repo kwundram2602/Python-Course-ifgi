@@ -9,11 +9,19 @@
 ***************************************************************************
 """
 # imports
-# install reportlab
+
+#install reportlab
 #import pip
 #pip.main(['install', 'reportlab'])
-from reportlab.pdfgen import canvas
 
+#import reportlap
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+
+#import time
+import time
+
+#import qgis modules
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsProcessing,QgsProject,
                        QgsProcessingParameterFileDestination,
@@ -27,6 +35,8 @@ from qgis.core import (QgsProcessing,QgsProject,
                        
                        QgsProcessingParameterFeatureSink)
 from qgis import processing
+from qgis.utils import iface
+
 
 
 
@@ -34,6 +44,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     """
     This processing script creates a PDF profile for a specific city district.
     """
+    
 
     # Constants used to refer to parameters and outputs. They will be
     # used when calling the algorithm from another algorithm, or when
@@ -44,11 +55,30 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     PDFOUTPUT = 'PDF_OUTPUT'
     
     # create pdf function
-    def createPDF(self,path,layername):
-        c = canvas.Canvas(path)
-        c.drawString(100,750,f"Statistics of {layername}")
+    def createPDF(self, outputPath, attributeListe):
+        c = canvas.Canvas(outputPath,pagesize = letter)
+        c.setFont("Helvetica", 12)
+        c.drawString(100,750,"Test")
+        
+        #if picturePath:
+           # c.drawImage(picturePath,50, 50, width = 100 , height = 100)
         c.save()
-        return 0  
+        
+    def districtImage(self, selected_district):
+        district_geometry = selected_district.geometry()
+        district_boundingBox = district_geometry.boundingBox()
+        iface.mapCanvas().setExtent(district_boundingBox)
+        iface.mapCanvas().refresh()
+        time.sleep(5)
+        
+        # Create a temporary file path and returning it
+        temp_file = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
+        picturePath = temp_file.name
+        temp_file.close()
+
+        iface.mapCanvas().saveAsImage(picturePath)
+        return picturePath
+    
     
     def tr(self, string):
         """
@@ -157,9 +187,15 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         """
         Here is where the processing itself takes place.
         """
+        
+        #Create picturePath 
+        #picturePath = self.districtImage()
+         
         pdf_output = self.parameterAsFileOutput(parameters,'PDF_OUTPUT',context)
-        print(parameters)
-        self.createPDF(self.PDFOUTPUT,"testlayer")
+        print(f"Creating PDF for district: {parameters} at {pdf_output}")
+        
+        
+        self.createPDF(pdf_output,"testlayer")
         
        
         
