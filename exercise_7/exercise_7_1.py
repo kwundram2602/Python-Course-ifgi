@@ -28,12 +28,7 @@ from qgis.core import (QgsProcessing,QgsProject,
                        QgsProcessingParameterFeatureSink)
 from qgis import processing
 
-# create pdf function
-def createPDF(path,layername):
-    c = canvas.Canvas(path)
-    c.drawString(100,750,f"Statistics of {layername}")
-    c.save()
-    return 0  
+
 
 class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     """
@@ -47,6 +42,13 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     DISTRICTNAME = 'DISTRICTNAME'
     POINTINPUT = 'POINTINPUT'
     PDFOUTPUT = 'PDF_OUTPUT'
+    
+    # create pdf function
+    def createPDF(self,path,layername):
+        c = canvas.Canvas(path)
+        c.drawString(100,750,f"Statistics of {layername}")
+        c.save()
+        return 0  
     
     def tr(self, string):
         """
@@ -155,10 +157,10 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         """
         Here is where the processing itself takes place.
         """
-        #pdf_output = self.parameterAsFileOutput(parameters,'PDF_OUTPUT',context)
+        pdf_output = self.parameterAsFileOutput(parameters,'PDF_OUTPUT',context)
         print(parameters)
-        createPDF(self.PDFOUTPUT,"testlayer")
+        self.createPDF(self.PDFOUTPUT,"testlayer")
         
        
         
-        return {self.PDFOUTPUT: "Template"}
+        return {'PDF_OUTPUT': pdf_output}
