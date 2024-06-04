@@ -191,24 +191,19 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     def count_of_layer(self,layer_name,dist_geom):
         layer = QgsProject.instance().mapLayersByName(layer_name)[0]
         layer.removeSelection()
-        parent = iface.mainWindow()
         # get count of layer in district
         for feature in layer.getFeatures():
             if(feature.geometry().within(dist_geom)):
                 layer.selectByIds([feature.id()],QgsVectorLayer.AddToSelection)
             
         if(layer.selectedFeatureCount()>0):
-        #selected features
-            selected_features= layer.selectedFeatures()
-        
+        #selected features count
+            feature_count=layer.selectedFeatureCount()
         else:
         # no features in district
             print(f"no features of {layer_name} in this district")
-            selected_features=None
             feature_count=0
-        
-        if(selected_features!=None):
-            feature_count=layer.selectedFeatureCount()
+                        
         return feature_count
 
     def processAlgorithm(self, parameters, context, feedback):
