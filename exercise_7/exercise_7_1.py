@@ -31,7 +31,6 @@ from qgis.core import (QgsProcessing,QgsProject,
                         QgsCoordinateTransform,
                         QgsPointXY,
                         QgsRectangle,
-                        
                        QgsProcessingParameterFileDestination,
                        QgsFeatureSink,
                        QgsCoordinateReferenceSystem,
@@ -41,20 +40,15 @@ from qgis.core import (QgsProcessing,QgsProject,
                        QgsProcessingParameterString,
                        QgsProcessingParameterEnum,
                        QgsProcessingParameterFeatureSource,
-                       
                        QgsProcessingParameterFeatureSink)
 from qgis import processing
 from qgis.utils import iface
-
-
-
 
 class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     """
     This processing script creates a PDF profile for a specific city district.
     """
     
-
     # Constants used to refer to parameters and outputs. They will be
     # used when calling the algorithm from another algorithm, or when
     # calling from the QGIS console.
@@ -119,7 +113,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         xMin = district_boundingBox.xMinimum()
         yMax = district_boundingBox.yMaximum() 
         yMin = district_boundingBox.yMinimum()
-        
+        # use points of bbox
         pointLeftBottom=QgsPointXY(xMin,yMin)
         pointRightTop= QgsPointXY(xMax,yMax)
         
@@ -132,7 +126,6 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         
         #set extent
         iface.mapCanvas().setExtent(bbox_transformed)
-        #iface.mapCanvas().setExtent(district_boundingBox)
         
         #refresh map
         iface.mapCanvas().refresh()
@@ -200,6 +193,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     def alphabeticalDistrictList(self):
         # district layer
         districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
+        
         # request order by nameclause
         request = QgsFeatureRequest()
         nameClause = QgsFeatureRequest.OrderByClause("Name",ascending = True)
@@ -250,19 +244,24 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         )
     # computes count of point layer in district(dist_geom)
     def count_of_layer(self,layer_name,dist_geom):
-        
+        # loads layer by layer_name
         layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+        
+        # clears selection first
         layer.removeSelection()
+        
         # get count of layer in district
         for feature in layer.getFeatures():
             if(feature.geometry().within(dist_geom)):
                 layer.selectByIds([feature.id()],QgsVectorLayer.AddToSelection)
-            
+                
+        # when there are features in the district   
         if(layer.selectedFeatureCount()>0):
         #selected features count
             feature_count=layer.selectedFeatureCount()
-        else:
+            
         # no features in district
+        else:
             print(f"no features of {layer_name} in this district")
             feature_count=0
                         
@@ -272,7 +271,6 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         """
         Here is where the processing itself takes place.
         """
-        parent = iface.mainWindow()
         # create list of district names. Use user defined function
         param_name_list= self.alphabeticalDistrictList()
         
@@ -308,13 +306,15 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         # pools or schools count
         point_input = self.parameterAsCompatibleSourceLayerPath(parameters,
         'POINTINPUT',context,compatibleFormats =['shp'])
-
+        # pools selected
         if (point_input.endswith("public_swimming_pools.shp")):
             pool_or_school_count= self.count_of_layer('public_swimming_pools',dist_geom)
             counted_property="Pools"
+        # schools selected
         elif(point_input.endswith("Schools.shp")):
             pool_or_school_count= self.count_of_layer('Schools',dist_geom)
             counted_property="Schools"
+        # none of them selected
         else:
             pool_or_school_count= 0
             counted_property="None"
