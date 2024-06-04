@@ -136,8 +136,8 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         parameters and outputs associated with it..
         """
         return self.tr("This processing script creates a PDF profile for a specific city district.")
-    # function definition to get alphabetical list
     
+    # function definition to get alphabetical list
     def alphabeticalDistrictList(self):
         # district layer
         districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
@@ -153,6 +153,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
             name= feature['NAME']
             district_names.append(name)
         return district_names
+    
     def initAlgorithm(self, config=None):
         """
         Here we define the inputs and output of the algorithm, along
@@ -170,7 +171,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
                 param_name_list
             )
         )
-        # point input paramter : pools or schools
+        # point input paramter : pools or schools. other point layers can still be selected but are not used
         self.addParameter(
             QgsProcessingParameterFeatureSource(
                 self.POINTINPUT,
@@ -188,6 +189,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
                 fileFilter='PDF files (*.pdf)'
             )
         )
+    # computes count of point layer in district(dist_geom)
     def count_of_layer(self,layer_name,dist_geom):
         layer = QgsProject.instance().mapLayersByName(layer_name)[0]
         layer.removeSelection()
