@@ -255,7 +255,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
             pool_or_school_count= self.count_of_layer('public_swimming_pools',dist_geom)
             counted_property="Pools"
         elif(point_input.endswith("Schools.shp")):
-            pool_or_school_count= self.count_of_layer('public_swimming_pools',dist_geom)
+            pool_or_school_count= self.count_of_layer('Schools',dist_geom)
             counted_property="Schools"
         else:
             pool_or_school_count= 0
