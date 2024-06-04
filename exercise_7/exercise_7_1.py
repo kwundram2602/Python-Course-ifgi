@@ -114,6 +114,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         
         #get district boundingBox
         district_boundingBox = selected_district_geometry.boundingBox()
+        
         xMax = district_boundingBox.xMaximum()
         xMin = district_boundingBox.xMinimum()
         yMax = district_boundingBox.yMaximum() 
@@ -131,6 +132,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         
         #set extent
         iface.mapCanvas().setExtent(bbox_transformed)
+        #iface.mapCanvas().setExtent(district_boundingBox)
         
         #refresh map
         iface.mapCanvas().refresh()
@@ -146,28 +148,6 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         
         #return image path
         return picturePath
-        
-        #get district boundingBox
-        district_boundingBox = selected_district_geometry.boundingBox()
-        
-        #set extent
-        iface.mapCanvas().setExtent(district_boundingBox)
-        
-        #refresh map
-        iface.mapCanvas().refresh()
-        
-        #wait 5 sec
-        time.sleep(5)
-        
-        #create file path and returning it
-        picturePath = os.path.join(QgsProject.instance().homePath(), "map.png")        
-        
-        #save Image
-        iface.mapCanvas().saveAsImage(picturePath)
-        
-        #return image path
-        return picturePath
-    
     
     def tr(self, string):
         """
