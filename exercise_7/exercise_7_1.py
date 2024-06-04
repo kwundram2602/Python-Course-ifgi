@@ -159,10 +159,6 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         with some other properties.
         """
         
-        
-        
-        
-        
         # create list of district names. Use user defined function
         param_name_list= self.alphabeticalDistrictList()
         
