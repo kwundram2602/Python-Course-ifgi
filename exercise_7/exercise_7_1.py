@@ -21,6 +21,9 @@ from reportlab.lib.pagesizes import letter
 #import time
 import time
 
+#import os
+import os
+
 #import qgis modules
 from qgis.PyQt.QtCore import QCoreApplication
 from qgis.core import (QgsProcessing,QgsProject,
@@ -57,36 +60,48 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
     PDFOUTPUT = 'PDF_OUTPUT'
     
     # create pdf function
-    def createPDF(self, outputPath, attributeDict):
+    def createPDF(self, outputPath, attributeDict, picturePath):
         c = canvas.Canvas(outputPath,pagesize = letter)
         c.setFont("Helvetica", 20)
         c.drawString(150,760,f"Information for the district '{attributeDict['district_name']}'")
         c.setFont("Helvetica", 14)
-        c.drawString(100,735,f"The parent district is : {attributeDict['parent']}")
-        c.drawString(100,705,f"The district has an area of {attributeDict['area']} m^2")
-        c.drawString(100,690,f"The district has  {attributeDict['house_number_count']} housenumbers")
-        c.drawString(100,675,f"The district contains {attributeDict['parcels_count']} parcels")
+        c.drawString(100,735,f"The parent district is : {attributeDict['parent']}.")
+        c.drawString(100,705,f"The district has an area of {attributeDict['area']} m^2.")
+        c.drawString(100,690,f"The district has  {attributeDict['house_number_count']} housenumbers.")
+        c.drawString(100,675,f"The district contains {attributeDict['parcels_count']} parcels.")
         if (attributeDict['counted_property']!="None"):
-            c.drawString(100,650,f"The counted property is '{attributeDict['counted_property']}'. There are {attributeDict['pool_or_school_count']} objects of this property")
+            c.drawString(100,650,f"The counted property is '{attributeDict['counted_property']}'. There are {attributeDict['pool_or_school_count']} objects of this property.")
         else:
-            c.drawString(100,650,f"Please select pools or schools as point input")
-        #if picturePath:
-           # c.drawImage(picturePath,50, 50, width = 100 , height = 100)
+            c.drawString(100,650,f"Please select pools or schools as point input.")
+        
+        if picturePath:
+            c.drawString(100,600,"Map of selected disrict:")
+            c.drawImage(picturePath,100, 270, width = 400 , height = 300)
         c.save()
         
-    def districtImage(self, selected_district):
-        district_geometry = selected_district.geometry()
-        district_boundingBox = district_geometry.boundingBox()
+    def districtImage(self, selected_district_geometry):
+        # get district geometry
+        
+        
+        #get district boundingBox
+        district_boundingBox = selected_district_geometry.boundingBox()
+        
+        #set extent
         iface.mapCanvas().setExtent(district_boundingBox)
+        
+        #refresh map
         iface.mapCanvas().refresh()
+        
+        #wait 5 sec
         time.sleep(5)
         
-        # Create a temporary file path and returning it
-        temp_file = tempfile.NamedTemporaryFile(suffix='.png', delete=False)
-        picturePath = temp_file.name
-        temp_file.close()
-
+        #create file path and returning it
+        picturePath = os.path.join(QgsProject.instance().homePath(), "map.png")        
+        
+        #save Image
         iface.mapCanvas().saveAsImage(picturePath)
+        
+        #return image path
         return picturePath
     
     
@@ -191,6 +206,7 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         )
     # computes count of point layer in district(dist_geom)
     def count_of_layer(self,layer_name,dist_geom):
+        
         layer = QgsProject.instance().mapLayersByName(layer_name)[0]
         layer.removeSelection()
         # get count of layer in district
@@ -216,14 +232,14 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         # create list of district names. Use user defined function
         param_name_list= self.alphabeticalDistrictList()
         
-        #Create picturePath 
-        #picturePath = self.districtImage()
         # load districts layer
         districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
+        
         #get name of chosen district
         district_name_index = self.parameterAsInt(parameters,'DISTRICTNAME',context)
         district_name_title= param_name_list[district_name_index]
-        # get paretnt district
+        
+        # get parent district
         districts.selectByExpression("\"Name\" = '{}'".format(district_name_title),
         districts.SetSelection)
         selected_dist= districts.selectedFeatures()[0]
@@ -267,8 +283,11 @@ class CreateCityDistrictProfile(QgsProcessingAlgorithm):
         'area':dist_area,'house_number_count':house_number_count,'parcels_count':parcels_count,
         'counted_property':counted_property,'pool_or_school_count':pool_or_school_count}
         
+        #Create picturePath 
+        picturePath = self.districtImage(dist_geom)
+        
         #create pdf
-        self.createPDF(pdf_output,dist_infos_dict)
+        self.createPDF(pdf_output,dist_infos_dict, picturePath)
         
         # return for debug
         return {'PDF_OUTPUT': pdf_output, 'Point':point_input,'district_name':district_name_title,'parent': parent,
