@@ -1,7 +1,7 @@
 Plugin Builder Results
 
 Your plugin MuensterCityDistrictTools was created in:
-    D:\PIQAG\PyGIT\PIQGUAG\exercise_8\plugin_folder\exercise_8_1
+    D:\PIQAG\PyGIT\PIQGUAG\exercise_8\plugin_folder\mcdt_script
 
 Your QGIS plugin directory is located at:
     C:/Users/kjell/AppData/Roaming/QGIS/QGIS3/profiles/default/python/plugins
@@ -17,7 +17,7 @@ What's Next:
 
   * Test the plugin by enabling it in the QGIS plugin manager
 
-  * Customize it by editing the implementation file: ``exercise_8_1.py``
+  * Customize it by editing the implementation file: ``mcdt_script.py``
 
   * Create your own custom icon, replacing the default icon.png
 

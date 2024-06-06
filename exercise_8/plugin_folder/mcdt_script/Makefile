@@ -1,7 +1,7 @@
 #/***************************************************************************
 # MuensterCityDistrictTools
 #
-# Gives information about certain district or exports selected features to csv
+# MuensterCityDistrictTools
 #							 -------------------
 #		begin				: 2024-06-06
 #		git sha				: $Format:%H$
@@ -38,15 +38,15 @@ LOCALES =
 # translation
 SOURCES = \
 	__init__.py \
-	exercise_8_1.py exercise_8_1_dialog.py
+	mcdt_script.py mcdt_script_dialog.py
 
-PLUGINNAME = exercise_8_1
+PLUGINNAME = mcdt_script
 
 PY_FILES = \
 	__init__.py \
-	exercise_8_1.py exercise_8_1_dialog.py
+	mcdt_script.py mcdt_script_dialog.py
 
-UI_FILES = exercise_8_1_dialog_base.ui
+UI_FILES = mcdt_script_dialog_base.ui
 
 EXTRAS = metadata.txt icon.png
 

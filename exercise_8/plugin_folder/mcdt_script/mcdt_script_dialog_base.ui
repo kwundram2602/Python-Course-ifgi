@@ -10,8 +10,7 @@
    </rect>
   </property>
   <property name="windowTitle" >
-   <string> Muenster
-City District Tools</string>
+   <string>Muenster City District Tools</string>
   </property>
   <widget class="QDialogButtonBox" name="button_box" >
    <property name="geometry" >

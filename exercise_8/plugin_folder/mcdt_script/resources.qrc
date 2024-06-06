@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/plugins/exercise_8_1" >
+    <qresource prefix="/plugins/mcdt_script" >
         <file>icon.png</file>
     </qresource>
 </RCC>

@@ -3,15 +3,14 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name= Muenster
-City District Tools
+name=Muenster City District Tools
 qgisMinimumVersion=3.0
-description=Gives information about certain district or exports selected features to csv
+description=MuensterCityDistrictTools
 version=0.1
 author=Kjell Wundram
 email=kwundram@uni-muenster.de
 
-about=The plugin provides a user interface from which the user can choose, if he/she wants some information about the selected city district or if the selected feature(s) should be exported to a *.csv file or if the selected feature should be exported as a PDF profile.
+about=MuensterCityDistrictTools
 
 tracker=http://bugs
 repository=http://repo
@@ -27,7 +26,7 @@ hasProcessingProvider=no
 tags=python
 
 homepage=http://homepage
-category=Plugins
+category=Vector
 icon=icon.png
 # experimental flag
 experimental=True
