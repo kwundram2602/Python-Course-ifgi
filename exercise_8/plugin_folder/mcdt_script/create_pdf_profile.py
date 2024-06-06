@@ -3,8 +3,33 @@ import reportlab
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
+# computes count of point layer in district(dist_geom)
+def count_of_layer(layer_name,dist_geom):
+        # loads layer by layer_name
+        layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+        
+        # clears selection first
+        layer.removeSelection()
+        
+        # get count of layer in district
+        for feature in layer.getFeatures():
+            if(feature.geometry().within(dist_geom)):
+                layer.selectByIds([feature.id()],QgsVectorLayer.AddToSelection)
+                
+        # when there are features in the district   
+        if(layer.selectedFeatureCount()>0):
+        #selected features count
+            feature_count=layer.selectedFeatureCount()
+            
+        # no features in district
+        else:
+            print(f"no features of {layer_name} in this district")
+            feature_count=0
+                        
+        return feature_count
+    
 # create pdf function
-def createPDF(self, outputPath, attributeDict, picturePath):
+def createPDF(outputPath, attributeDict, picturePath):
         # create canvas
         c = canvas.Canvas(outputPath,pagesize = letter)
         
@@ -38,3 +63,4 @@ def createPDF(self, outputPath, attributeDict, picturePath):
         
         #save canvas
         c.save()
+        
