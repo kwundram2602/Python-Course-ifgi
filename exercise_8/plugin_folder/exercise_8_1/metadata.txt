@@ -3,10 +3,10 @@
 # This file should be included when you package your plugin.# Mandatory items:
 
 [general]
-name=Muenster
+name= Muenster
 City District Tools
 qgisMinimumVersion=3.0
-description=Gives information about selected district and can export features to csv file.
+description=Gives information about certain district or exports selected features to csv
 version=0.1
 author=Kjell Wundram
 email=kwundram@uni-muenster.de

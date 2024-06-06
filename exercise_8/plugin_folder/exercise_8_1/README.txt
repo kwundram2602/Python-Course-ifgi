@@ -1,6 +1,6 @@
 Plugin Builder Results
 
-Your plugin MuensterCityDistrictTools. was created in:
+Your plugin MuensterCityDistrictTools was created in:
     D:\PIQAG\PyGIT\PIQGUAG\exercise_8\plugin_folder\exercise_8_1
 
 Your QGIS plugin directory is located at:
@@ -21,7 +21,7 @@ What's Next:
 
   * Create your own custom icon, replacing the default icon.png
 
-  * Modify your user interface by opening MuensterCityDistrictTools._dockwidget_base.ui in Qt Designer
+  * Modify your user interface by opening MuensterCityDistrictTools_dialog_base.ui in Qt Designer
 
   * You can use the Makefile to compile your Ui and resource files when
     you make changes. This requires GNU make (gmake)

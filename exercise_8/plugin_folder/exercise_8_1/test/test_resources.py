@@ -9,7 +9,7 @@
 """
 
 __author__ = 'kwundram@uni-muenster.de'
-__date__ = '2024-06-05'
+__date__ = '2024-06-06'
 __copyright__ = 'Copyright 2024, Kjell Wundram'
 
 import unittest
@@ -18,7 +18,7 @@ from qgis.PyQt.QtGui import QIcon
 
 
 
-class MuensterCityDistrictTools.DialogTest(unittest.TestCase):
+class MuensterCityDistrictToolsDialogTest(unittest.TestCase):
     """Test rerources work."""
 
     def setUp(self):
@@ -31,12 +31,12 @@ class MuensterCityDistrictTools.DialogTest(unittest.TestCase):
 
     def test_icon_png(self):
         """Test we can click OK."""
-        path = ':/plugins/MuensterCityDistrictTools./icon.png'
+        path = ':/plugins/MuensterCityDistrictTools/icon.png'
         icon = QIcon(path)
         self.assertFalse(icon.isNull())
 
 if __name__ == "__main__":
-    suite = unittest.makeSuite(MuensterCityDistrictTools.ResourcesTest)
+    suite = unittest.makeSuite(MuensterCityDistrictToolsResourcesTest)
     runner = unittest.TextTestRunner(verbosity=2)
     runner.run(suite)
 

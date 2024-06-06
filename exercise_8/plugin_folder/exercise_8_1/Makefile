@@ -1,9 +1,9 @@
 #/***************************************************************************
-# MuensterCityDistrictTools.
+# MuensterCityDistrictTools
 #
-# Gives information about selected district and can export features to csv file.
+# Gives information about certain district or exports selected features to csv
 #							 -------------------
-#		begin				: 2024-06-05
+#		begin				: 2024-06-06
 #		git sha				: $Format:%H$
 #		copyright			: (C) 2024 by Kjell Wundram
 #		email				: kwundram@uni-muenster.de
@@ -38,15 +38,15 @@ LOCALES =
 # translation
 SOURCES = \
 	__init__.py \
-	exercise_8_1.py exercise_8_1_dockwidget.py
+	exercise_8_1.py exercise_8_1_dialog.py
 
 PLUGINNAME = exercise_8_1
 
 PY_FILES = \
 	__init__.py \
-	exercise_8_1.py exercise_8_1_dockwidget.py
+	exercise_8_1.py exercise_8_1_dialog.py
 
-UI_FILES = exercise_8_1_dockwidget_base.ui
+UI_FILES = exercise_8_1_dialog_base.ui
 
 EXTRAS = metadata.txt icon.png
 
