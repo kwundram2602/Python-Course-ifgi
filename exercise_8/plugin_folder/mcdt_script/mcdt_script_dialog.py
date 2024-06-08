@@ -28,7 +28,7 @@ from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
 
 # import pdf create function and others
-from create_pdf_profile import *
+from .create_pdf_profile import *
 # import other windows:
 from .csv_clicked_dialog import Ui_CSV_Dialog
 from .single_district_dialog import Ui_single_district_Dialog
