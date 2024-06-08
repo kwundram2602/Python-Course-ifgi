@@ -27,12 +27,22 @@ import os
 from qgis.PyQt import uic
 from qgis.PyQt import QtWidgets
 
+# import pdf create function and others
+from create_pdf_profile import *
+# import other windows:
+
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
     os.path.dirname(__file__), 'mcdt_script_dialog_base.ui'))
 
 
 class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
+    def open_csv_clicked_ui(self):
+        
+        csvDialog= QtWidgets.QDialog()
+        ui = "y"
+        pass
+    
     def __init__(self, parent=None):
         """Constructor."""
         super(MuensterCityDistrictToolsDialog, self).__init__(parent)
@@ -40,5 +50,9 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
         # After self.setupUi() you can access any designer object by doing
         # self.<objectname>, and you can use autoconnect slots - see
         # http://qt-project.org/doc/qt-4.8/designer-using-a-ui-file.html
+        
+        
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
+        self.selectedFeaturesCSVButton.clicked.connect()
+        
