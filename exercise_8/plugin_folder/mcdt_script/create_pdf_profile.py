@@ -3,6 +3,57 @@ import reportlab
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 
+
+def districtImage(selected_district):
+        # get districts
+        districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
+
+        # get district geometry
+        selected_district_geometry=selected_district.geometry()
+        # layer crs for transformation
+        crsLayer = districts.crs()
+        # Target coordinate system
+        crsTarget = QgsCoordinateReferenceSystem(3857)
+        # Initializing the transformation
+        transformation = QgsCoordinateTransform(crsLayer, crsTarget, QgsProject.instance())
+        
+        #get district boundingBox
+        district_boundingBox = selected_district_geometry.boundingBox()
+        
+        xMax = district_boundingBox.xMaximum()
+        xMin = district_boundingBox.xMinimum()
+        yMax = district_boundingBox.yMaximum() 
+        yMin = district_boundingBox.yMinimum()
+        # use points of bbox
+        pointLeftBottom=QgsPointXY(xMin,yMin)
+        pointRightTop= QgsPointXY(xMax,yMax)
+        
+        #transform points
+        pointLeftBottom=transformation.transform(pointLeftBottom)
+        pointRightTop=transformation.transform(pointRightTop)
+        
+        # use transoformed points
+        bbox_transformed= QgsRectangle(pointLeftBottom,pointRightTop)
+        
+        #set extent
+        iface.mapCanvas().setExtent(bbox_transformed)
+        
+        #refresh map
+        iface.mapCanvas().refresh()
+        
+        #wait 5 sec
+        time.sleep(5)
+        
+        #create file path and returning it
+        picturePath = os.path.join(QgsProject.instance().homePath(), "map.png")        
+        
+        #save Image
+        iface.mapCanvas().saveAsImage(picturePath)
+        
+        #return image path
+        return picturePath
+
+
 # computes count of point layer in district(dist_geom)
 def count_of_layer(layer_name,dist_geom):
         # loads layer by layer_name

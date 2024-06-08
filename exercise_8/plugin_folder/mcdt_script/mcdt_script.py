@@ -24,6 +24,7 @@
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction
+from qgis.core import QgsProject
 
 # Initialize Qt resources from file resources.py
 from .resources import *
@@ -189,7 +190,8 @@ class MuensterCityDistrictTools:
         if self.first_start == True:
             self.first_start = False
             self.dlg = MuensterCityDistrictToolsDialog()
-
+        # get districts
+        districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
         # show the dialog
         self.dlg.show()
         # Run the dialog event loop
