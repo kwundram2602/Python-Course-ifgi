@@ -11,21 +11,21 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        Dialog.setObjectName("Dialog")
-        Dialog.resize(400, 300)
-        self.buttonBox = QtWidgets.QDialogButtonBox(Dialog)
+class Ui_CSV_Dialog(object):
+    def setupUi(self, CSV_Dialog):
+        CSV_Dialog.setObjectName("CSV_Dialog")
+        CSV_Dialog.resize(400, 300)
+        self.buttonBox = QtWidgets.QDialogButtonBox(CSV_Dialog)
         self.buttonBox.setGeometry(QtCore.QRect(30, 240, 341, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
 
-        self.retranslateUi(Dialog)
-        self.buttonBox.accepted.connect(Dialog.accept)
-        self.buttonBox.rejected.connect(Dialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(Dialog)
+        self.retranslateUi(CSV_Dialog)
+        self.buttonBox.accepted.connect(CSV_Dialog.accept)
+        self.buttonBox.rejected.connect(CSV_Dialog.reject)
+        QtCore.QMetaObject.connectSlotsByName(CSV_Dialog)
 
-    def retranslateUi(self, Dialog):
+    def retranslateUi(self, CSV_Dialog):
         _translate = QtCore.QCoreApplication.translate
-        Dialog.setWindowTitle(_translate("Dialog", "Dialog"))
+        CSV_Dialog.setWindowTitle(_translate("CSV_Dialog", "Dialog"))

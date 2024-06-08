@@ -30,6 +30,8 @@ from qgis.PyQt import QtWidgets
 # import pdf create function and others
 from create_pdf_profile import *
 # import other windows:
+from .csv_clicked_dialog import Ui_CSV_Dialog
+from .single_district_dialog import Ui_single_district_Dialog
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
 FORM_CLASS, _ = uic.loadUiType(os.path.join(
@@ -40,7 +42,7 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
     def open_csv_clicked_ui(self):
         
         csvDialog= QtWidgets.QDialog()
-        ui = "y"
+        ui = Ui_CSV_Dialog()
         pass
     
     def __init__(self, parent=None):
