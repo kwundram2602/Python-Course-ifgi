@@ -43,7 +43,16 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
         
         csvDialog= QtWidgets.QDialog()
         ui = Ui_CSV_Dialog()
-        pass
+        ui.setupUi(csvDialog)
+        csvDialog.exec_()
+        
+    def open_single_district_clicked_ui(self):
+        
+        single_districtDialog= QtWidgets.QDialog()
+        ui = Ui_single_district_Dialog()
+        ui.setupUi(single_districtDialog)
+        single_districtDialog.exec_()
+        
     
     def __init__(self, parent=None):
         """Constructor."""
@@ -56,5 +65,6 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
         
         # #widgets-and-dialogs-with-auto-connect
         self.setupUi(self)
-        self.selectedFeaturesCSVButton.clicked.connect()
+        self.selectedFeaturesCSVButton.clicked.connect(self.open_csv_clicked_ui)
+        self.singleDistrictButton.clicked.connect(self.open_single_district_clicked_ui)
         
