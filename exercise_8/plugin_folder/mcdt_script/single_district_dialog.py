@@ -9,23 +9,114 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from qgis.core import (QgsProject,QgsVectorLayer)
+
+
 
 
 class Ui_single_district_Dialog(object):
     def setupUi(self, single_district_Dialog):
-        single_district_Dialog.setObjectName("single_district_Dialog")
-        single_district_Dialog.resize(400, 300)
-        self.buttonBox = QtWidgets.QDialogButtonBox(single_district_Dialog)
-        self.buttonBox.setGeometry(QtCore.QRect(30, 240, 341, 32))
-        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
-        self.buttonBox.setObjectName("buttonBox")
+        districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
+        selected_features = districts.selectedFeatures()
 
-        self.retranslateUi(single_district_Dialog)
-        self.buttonBox.accepted.connect(single_district_Dialog.accept)
-        self.buttonBox.rejected.connect(single_district_Dialog.reject)
-        QtCore.QMetaObject.connectSlotsByName(single_district_Dialog)
+        if len(selected_features) == 1:
+            selected_feature = selected_features[0]
+
+            # get name
+            dist_name = dist_name = selected_feature['Name']
+
+            # get geom
+            dist_geom = selected_feature.geometry()
+
+            #get area
+            dist_area = dist_geom.area()
+
+            #get parent district
+            dist_parent = selected_feature["P_District"]
+            
+            # household, pool and school layer count
+            house_number_count = self.count_of_layer('House_Numbers',dist_geom)
+            pool_count = self.count_of_layer('public_swimming_pools', dist_geom)
+            school_count = self.count_of_layer('Schools',dist_geom)
+
+            # get parcels count
+            parcels = QgsProject.instance().mapLayersByName('Muenster_Parcels')[0]
+            parcels.removeSelection()
+            parcels.selectByExpression("\"Name\" = '{}'".format(dist_name),
+            parcels.SetSelection)
+            parcels_count = parcels.selectedFeatureCount()
+
+            feature_id = selected_feature.id()
+
+            print("Feature ID:", feature_id)
+
+            single_district_Dialog.setObjectName("single_district_Dialog")
+            single_district_Dialog.resize(400, 300)
+            self.buttonBox = QtWidgets.QDialogButtonBox(single_district_Dialog)
+            self.buttonBox.setGeometry(QtCore.QRect(30, 240, 341, 32))
+            self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+            self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+            self.buttonBox.setObjectName("buttonBox")
+            self.buttonBox.accepted.connect(single_district_Dialog.accept)
+            self.buttonBox.rejected.connect(single_district_Dialog.reject)
+
+            # Adding a QLabel widget to display text
+            self.label = QtWidgets.QLabel(single_district_Dialog)
+            self.label.setGeometry(QtCore.QRect(30, 30, 341, 200))
+            self.label.setObjectName("label")
+            self.label.setAlignment(QtCore.Qt.AlignCenter)
+
+            # set text in label
+            self.label.setText(f"Name of District: {dist_name}\n"
+                                        f"Name of parent district: {dist_parent}\n"
+                                        f"Area: {dist_area:.2f} m^2\n"
+                                        f"Household count: {house_number_count}\n"
+                                        f"Public swimming pool count: {pool_count}\n"
+                                        f"School count: {school_count}\n"
+                                        f"Parcels count: {parcels_count}")
+            
+            self.retranslateUi(single_district_Dialog)
+            QtCore.QMetaObject.connectSlotsByName(single_district_Dialog)
+
+        else:
+            message_text = f"Es ist nicht genau ein Feature ausgewählt. Anzahl der ausgewählten Features: {len(selected_features)}"
+
+            # Create MessageBox
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setIcon(QtWidgets.QMessageBox.Information)
+            msg_box.setText(message_text)
+            msg_box.setWindowTitle("Information")
+            msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+            # Anzeigen der QMessageBox
+            msg_box.exec_()
+            return
 
     def retranslateUi(self, single_district_Dialog):
         _translate = QtCore.QCoreApplication.translate
-        single_district_Dialog.setWindowTitle(_translate("single_district_Dialog", "Dialog"))
+        single_district_Dialog.setWindowTitle(_translate("single_district_Dialog", "Attributuebersicht"))
+    
+     # computes count of point layer in district(dist_geom)
+    def count_of_layer(self,layer_name,dist_geom):
+        # loads layer by layer_name
+        layer = QgsProject.instance().mapLayersByName(layer_name)[0]
+        
+        # clears selection first
+        layer.removeSelection()
+        
+        # get count of layer in district
+        for feature in layer.getFeatures():
+            if(feature.geometry().within(dist_geom)):
+                layer.selectByIds([feature.id()],QgsVectorLayer.AddToSelection)
+                
+        # when there are features in the district   
+        if(layer.selectedFeatureCount()>0):
+        #selected features count
+            feature_count=layer.selectedFeatureCount()
+            
+        # no features in district
+        else:
+            print(f"no features of {layer_name} in this district")
+            feature_count=0
+                        
+        return feature_count
