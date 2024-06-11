@@ -1,4 +1,6 @@
 import csv
+
+# ouputpath mus be raw string containing filename and .csv
 def export_feature_csv(layer,outputpath):
     #header for csv
     attributes_header = layer.fields().names()
@@ -20,9 +22,3 @@ def export_feature_csv(layer,outputpath):
             writer.writerow(entry)
     # close csv
     csv_output.close()
-    print (features_csv)
-    
-
-
-        
-    
