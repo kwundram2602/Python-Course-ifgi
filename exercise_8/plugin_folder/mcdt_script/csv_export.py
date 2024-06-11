@@ -10,13 +10,17 @@ def export_feature_csv(layer,outputpath):
     for feature in selected_features:
         feature_entry = feature.attributes()
         features_csv.append(feature_entry)
-    csv_output= open(outputpath, 'w',newline='')
-    writer = csv.writer(csv_output,delimiter=';')
-    # write attributes header
-    writer.writerow(attributes_header)
-    # write features nto csv
-    for entry in features_csv:
-        writer.writerow(entry)
+    # open csv
+    with open(outputpath, 'w',newline='') as csv_output:
+        writer = csv.writer(csv_output,delimiter=';')
+        # write attributes header
+        writer.writerow(attributes_header)
+        # write features into csv
+        for entry in features_csv:
+            writer.writerow(entry)
+    # close csv
+    csv_output.close()
+    print (features_csv)
     
 
 
