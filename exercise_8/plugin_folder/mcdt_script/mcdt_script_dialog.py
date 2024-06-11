@@ -46,10 +46,10 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
         
         exDialog= QtWidgets.QDialog()
         ui = Ui_Export_Dialog()
-        ui.setupUi(exportDialog)
+        ui.setupUi(exDialog)
         #self.exportDialog = ui
         
-        exDialog.exec_()
+        exDialog.exec_()    
         
     
     def select_output_file(self):
