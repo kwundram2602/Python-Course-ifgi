@@ -67,10 +67,7 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
     
     def __init__(self, parent=None):
         """Constructor."""
-        self.exDialog= QtWidgets.QDialog()
-        ui = Ui_Export_Dialog()
-        ui.setupUi(self.exportDialog)
-        self.exportDialog = ui
+        
         super(MuensterCityDistrictToolsDialog, self).__init__(parent)
         # Set up the user interface from Designer through FORM_CLASS.
         # After self.setupUi() you can access any designer object by doing
