@@ -30,7 +30,7 @@ from qgis.PyQt import QtWidgets
 # import pdf create function and others
 from .create_pdf_profile import *
 # import other windows:
-from .csv_clicked_dialog import Ui_CSV_Dialog
+from .export_dialog import Ui_Export_Dialog
 from .single_district_dialog import Ui_single_district_Dialog
 
 # This loads your .ui file so that PyQt can populate your plugin with the elements from Qt Designer
@@ -39,23 +39,38 @@ FORM_CLASS, _ = uic.loadUiType(os.path.join(
 
 
 class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
-    def open_csv_clicked_ui(self):
+    
+    
+    
+    def open_export_clicked_ui(self):
         
-        csvDialog= QtWidgets.QDialog()
-        ui = Ui_CSV_Dialog()
-        ui.setupUi(csvDialog)
-        csvDialog.exec_()
+        exDialog= QtWidgets.QDialog()
+        ui = Ui_Export_Dialog()
+        ui.setupUi(exportDialog)
+        #self.exportDialog = ui
         
+        exDialog.exec_()
+        
+    
+    def select_output_file(self):
+        filename, _filter = QFileDialog.getSaveFileName(self.exportDialog, "Select   output file ","", '*.csv')
+        self.exportDialog.output_path_lineEdit.setText(filename)  
+             
     def open_single_district_clicked_ui(self):
         
         single_districtDialog= QtWidgets.QDialog()
         ui = Ui_single_district_Dialog()
         ui.setupUi(single_districtDialog)
+        
         single_districtDialog.exec_()
         
     
     def __init__(self, parent=None):
         """Constructor."""
+        self.exDialog= QtWidgets.QDialog()
+        ui = Ui_Export_Dialog()
+        ui.setupUi(self.exportDialog)
+        self.exportDialog = ui
         super(MuensterCityDistrictToolsDialog, self).__init__(parent)
         # Set up the user interface from Designer through FORM_CLASS.
         # After self.setupUi() you can access any designer object by doing
@@ -64,7 +79,13 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
         
         
         # #widgets-and-dialogs-with-auto-connect
+        
         self.setupUi(self)
-        self.selectedFeaturesCSVButton.clicked.connect(self.open_csv_clicked_ui)
+        self.selectedFeaturesCSVButton.clicked.connect(self.open_export_clicked_ui)
         self.singleDistrictButton.clicked.connect(self.open_single_district_clicked_ui)
+        
+        
+        # export dialog
+        #self.exportDialog.output_pushButton.clicked.connect(self.select_output_file)
+        
         

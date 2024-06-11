@@ -20,6 +20,7 @@
 
  10. Reload, test and share the plugin
 
+pyuic5 "D:\PIQAG\PyGIT\PIQGUAG\exercise_8\plugin_folder\mcdt_script\single_district_dialog.ui" -o "D:\PIQAG\PyGIT\PIQGUAG\exercise_8\plugin_folder\mcdt_script\single_district_dialog.py"
 
 
  # after creating plugin folder

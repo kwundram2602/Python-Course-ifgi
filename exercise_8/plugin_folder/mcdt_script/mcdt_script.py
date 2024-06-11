@@ -23,6 +23,7 @@
 """
 from qgis.PyQt.QtCore import QSettings, QTranslator, QCoreApplication
 from qgis.PyQt.QtGui import QIcon
+from PyQt5.QtWidgets import QFileDialog 
 from qgis.PyQt.QtWidgets import QAction
 from qgis.core import QgsProject
 
@@ -182,6 +183,7 @@ class MuensterCityDistrictTools:
 
 
     
+        
     def run(self):
         """Run method that performs all the real work"""
 
@@ -190,6 +192,9 @@ class MuensterCityDistrictTools:
         if self.first_start == True:
             self.first_start = False
             self.dlg = MuensterCityDistrictToolsDialog()
+            
+            
+            #self.exportui = self.dlg.exportDialog
         # get districts
         districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
         # show the dialog
