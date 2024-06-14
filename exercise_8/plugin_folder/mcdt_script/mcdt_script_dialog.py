@@ -47,7 +47,7 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
         districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
         selected_features = districts.selectedFeatures()
 
-        if len(selected_features) == 1:
+        if len(selected_features) >= 1:
             exDialog= QtWidgets.QDialog()
             ui = Ui_Export_Dialog()
             ui.setupUi(exDialog)
@@ -55,7 +55,7 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
             
             exDialog.exec_()     
         else:
-            message_text = f"Es ist nicht genau ein Feature ausgewählt. Anzahl der ausgewählten Features: {len(selected_features)}"
+            message_text = f"Es ist  kein Feature ausgewählt. Anzahl der ausgewählten Features: {len(selected_features)}"
 
             # Create MessageBox
             msg_box = QtWidgets.QMessageBox()
@@ -110,7 +110,6 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
         self.singleDistrictButton.clicked.connect(self.open_single_district_clicked_ui)
         
         
-        # export dialog
-        #self.exportDialog.output_pushButton.clicked.connect(self.select_output_file)
+        
         
         

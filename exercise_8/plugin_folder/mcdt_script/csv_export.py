@@ -1,10 +1,10 @@
 import csv 
 from .create_pdf_profile import count_of_layer
-
+from qgis.core import QgsProject
 # ouputpath mus be raw string containing filename and .csv
 def export_feature_csv(layer,outputpath):
     print(outputpath)
-    
+     
     #header for csv
     attributes_header = layer.fields().names()
     attributes_header.append("size_Parcels")
@@ -50,3 +50,4 @@ def export_feature_csv(layer,outputpath):
             writer.writerow(entry)
     # close csv
     csv_output.close()
+    return True

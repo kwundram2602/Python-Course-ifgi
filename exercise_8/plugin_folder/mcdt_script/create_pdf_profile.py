@@ -1,9 +1,17 @@
 #import reportlap
-import reportlab
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
+# qgis core imports
+from qgis.core import (QgsProject,QgsVectorLayer,
+                        QgsCoordinateReferenceSystem,
+                        QgsCoordinateTransform,QgsPointXY,QgsRectangle)
+#iface
+from qgis.utils import iface
+# time and os
+import time
+import os 
 
-
+# function to crate image
 def districtImage(selected_district):
         # get districts
         districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
@@ -94,18 +102,19 @@ def createPDF(outputPath, attributeDict, picturePath):
         c.setFont("Helvetica", 14)
         
         #write information
+        # parent district
         c.drawString(100,735,f"The parent district is : {attributeDict['parent']}.")
+        #area
         c.drawString(100,705,f"The district has an area of {attributeDict['area']} m^2.")
+        # house numbers
         c.drawString(100,690,f"The district has  {attributeDict['house_number_count']} housenumbers.")
+        #parcels
         c.drawString(100,675,f"The district contains {attributeDict['parcels_count']} parcels.")
+        #pools
+        c.drawString(100,660,f"The district contains {attributeDict['pool_count']} pool/s.") 
+        # schools
+        c.drawString(100,645,f"The district contains {attributeDict['school_count']} school/s.") 
         
-        #if schools or pools are selected
-        if (attributeDict['counted_property']!="None"):
-            c.drawString(100,650,f"The counted property is '{attributeDict['counted_property']}'. There are {attributeDict['pool_or_school_count']} objects of this property.")
-        
-        #when not selected
-        else:
-            c.drawString(100,650,f"Please select pools or schools as point input.")
         
         # draw image of map when picturePath is given
         if picturePath:
@@ -114,4 +123,5 @@ def createPDF(outputPath, attributeDict, picturePath):
         
         #save canvas
         c.save()
+        return True
         
