@@ -48,9 +48,9 @@ class Ui_Export_Dialog(object):
     def select_pdf_file(self):
         fileName, _ = QtWidgets.QFileDialog.getSaveFileName(None, "Save File", "", "PDF File (*.pdf)")
         if fileName:
-            print(f"Selected PDF file: {fileName}")  # Replace this with your actual export logic
+            print(f"Selected PDF file: {fileName}")
 
     def select_csv_file(self):
         fileName, _ = QtWidgets.QFileDialog.getSaveFileName(None, "Save File", "", "CSV File (*.csv)")
         if fileName:
-            print(f"Selected CSV file: {fileName}")  # Replace this with your actual export logic
+            print(f"Selected CSV file: {fileName}")  
