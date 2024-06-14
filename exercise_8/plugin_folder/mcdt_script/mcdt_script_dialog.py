@@ -25,7 +25,8 @@
 import os
 
 from qgis.PyQt import uic
-from qgis.PyQt import QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
+from qgis.core import (QgsProject,QgsVectorLayer)
 
 # import pdf create function and others
 from .create_pdf_profile import *
@@ -43,27 +44,54 @@ class MuensterCityDistrictToolsDialog(QtWidgets.QDialog, FORM_CLASS):
     
     
     def open_export_clicked_ui(self):
-        
-        exDialog= QtWidgets.QDialog()
-        ui = Ui_Export_Dialog()
-        ui.setupUi(exDialog)
-        #self.exportDialog = ui
-        
-        exDialog.exec_()    
-        
-    
-    def select_output_file(self):
-        filename, _filter = QFileDialog.getSaveFileName(self.exportDialog, "Select   output file ","", '*.csv')
-        self.exportDialog.output_path_lineEdit.setText(filename)  
+        districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
+        selected_features = districts.selectedFeatures()
+
+        if len(selected_features) == 1:
+            exDialog= QtWidgets.QDialog()
+            ui = Ui_Export_Dialog()
+            ui.setupUi(exDialog)
+            #self.exportDialog = ui
+            
+            exDialog.exec_()     
+        else:
+            message_text = f"Es ist nicht genau ein Feature ausgewählt. Anzahl der ausgewählten Features: {len(selected_features)}"
+
+            # Create MessageBox
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setIcon(QtWidgets.QMessageBox.Information)
+            msg_box.setText(message_text)
+            msg_box.setWindowTitle("Information")
+            msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+            # Anzeigen der QMessageBox
+            msg_box.exec_()
+            return
+
              
     def open_single_district_clicked_ui(self):
-        
-        single_districtDialog= QtWidgets.QDialog()
-        ui = Ui_single_district_Dialog()
-        ui.setupUi(single_districtDialog)
-        
-        single_districtDialog.exec_()
-        
+        districts = QgsProject.instance().mapLayersByName('Muenster_City_Districts')[0]
+        selected_features = districts.selectedFeatures()
+
+        if len(selected_features) == 1:
+            single_districtDialog= QtWidgets.QDialog()
+            ui = Ui_single_district_Dialog()
+            ui.setupUi(single_districtDialog)
+            
+            single_districtDialog.exec_()
+        else:
+            message_text = f"Es ist nicht genau ein Feature ausgewählt. Anzahl der ausgewählten Features: {len(selected_features)}"
+
+            # Create MessageBox
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setIcon(QtWidgets.QMessageBox.Information)
+            msg_box.setText(message_text)
+            msg_box.setWindowTitle("Information")
+            msg_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
+
+            # Anzeigen der QMessageBox
+            msg_box.exec_()
+            return
     
     def __init__(self, parent=None):
         """Constructor."""
