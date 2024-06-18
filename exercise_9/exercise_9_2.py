@@ -5,12 +5,9 @@ arcpy.env.overwriteOutput = True
 # set workspace (change to your geodatabase)
 arcpy.env.workspace = r"C:\Users\job02\Downloads\exercise_arcpy_1_neu.gdb\exercise_arcpy_1.gdb"
 
-coverage_feature_class = "coverage"
-coverage_feature_class = arcpy.ValidateTableName(coverage_feature_class)
-input_feature_class = "active_assets"
-input_feature_class = arcpy.ValidateTableName(input_feature_class)
-helper_field = "buffer_dist"
-helper_field = arcpy.ValidateFieldName(helper_field)
+coverage_feature_class = arcpy.ValidateTableName("coverage")
+input_feature_class = arcpy.ValidateTableName("active_assets")
+helper_field = arcpy.ValidateFieldName("buffer_dis")
 
 # set buffer distances
 buffer_distances = {
