@@ -31,11 +31,11 @@ else:
 # update the helper field with the corresponding distances
 with arcpy.da.UpdateCursor(input_feature_class, ["type", helper_field]) as cursor:
     for row in cursor:
-        asset_type = row[0]  # Use a different name to avoid using a Python keyword
+        asset_type = row[0]  
         if asset_type in buffer_distances:
             row[1] = buffer_distances[asset_type]
         else:
-            row[1] = None  # In case there's an asset type not in the dictionary
+            row[1] = None  
         cursor.updateRow(row)
 
 # create buffer 
