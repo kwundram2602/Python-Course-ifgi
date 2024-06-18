@@ -27,6 +27,7 @@ if helper_field not in field_names:
     arcpy.management.AddField(input_feature_class, helper_field, "FLOAT")
 else:
     arcpy.management.DeleteField(input_feature_class, helper_field)
+    arcpy.management.AddField(input_feature_class, helper_field, "FLOAT")
 
 # update the helper field with the corresponding distances
 with arcpy.da.UpdateCursor(input_feature_class, ["type", helper_field]) as cursor:
