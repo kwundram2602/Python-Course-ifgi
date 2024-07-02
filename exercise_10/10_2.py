@@ -1,10 +1,12 @@
 import arcpy
 
 point_for_test = arcpy.GetParameterAsText(0)
-stops_ms_mitte = r"C:\Users\job02\Downloads\arcpy_2.gdb\arcpy_2.gdb\stops_ms_mitte"  # Hardcoded fc you should adjust the file location
+stops_ms_mitte = arcpy.GetParameterAsText(1)
+name_field = arcpy.GetParameterAsText(2)
+name_value =arcpy.GetParameterAsText(3)
 
-arcpy.analysis.Near("point_for_test",
-                    "stops_ms_mitte", None,
+arcpy.analysis.Near(point_for_test,
+                    stops_ms_mitte, None,
                     "LOCATION", "NO_ANGLE",
                     "PLANAR", "NEAR_FID NEAR_FID;NEAR_DIST NEAR_DIST;NEAR_X NEAR_X;NEAR_Y NEAR_Y")
 
